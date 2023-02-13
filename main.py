@@ -7,11 +7,12 @@ class Car:
         self.car = pygame.image.load('car.png').convert()
         self.car = pygame.transform.scale(self.car,(30, 20))
         self.car = pygame.transform.rotate(self.car, 180)
+        self.rotated_car = self.car
         self.angle = 0
         self.position = [315, 455]
     def draw(self):
-        self.car = pygame.transform.rotate(self.car, self.angle)
-        screen.blit(self.car, self.position)
+        self.rotated_car = pygame.transform.rotate(self.car, self.angle)
+        screen.blit(self.rotated_car, self.position)
 
 screen = pygame.display.set_mode((960, 540))
 game_map = pygame.image.load('.\\maps\\PNG\\map.png').convert()
