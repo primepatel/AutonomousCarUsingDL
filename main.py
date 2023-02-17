@@ -9,18 +9,19 @@ class Car:
         self.car = pygame.transform.rotate(self.car, 180)
         self.rotated_car = self.car
         self.angle = 0
-        self.position = [285, 455] #[315, 455]
-        self.edges = [[300, 465], [330, 465], [330, 445], [300, 445]]
+        self.position = [315, 455]
+        self.center = [self.position[0], self.position[1] + 10]
+        self.edges = [[self.position[0]-15, self.position[1]-10], [self.position[0]+15, self.position[1]-10], [self.position[0]+15, self.position[1]+10], [self.position[0]-15, self.position[1]+10]]
 
     def draw(self):
         self.rotated_car = pygame.transform.rotate(self.car, self.angle)
-        screen.blit(self.rotated_car, self.position)
+        screen.blit(self.rotated_car, (self.position[0]-15, self.position[1]-10))
     
     def set_edges(self, cords):
-        self.edges[0][0], self.edges[0][1] = cords[0] - 15, cords[1] + 10
-        self.edges[1][0], self.edges[1][1] = cords[0] + 15, cords[1] + 10
-        self.edges[2][0], self.edges[2][1] = cords[0] + 15, cords[1] - 10
-        self.edges[3][0], self.edges[3][1] = cords[0] - 15, cords[1] - 10
+        self.edges[0][0], self.edges[0][1] = cords[0] - 15, cords[1] - 10
+        self.edges[1][0], self.edges[1][1] = cords[0] + 15, cords[1] - 10
+        self.edges[2][0], self.edges[2][1] = cords[0] + 15, cords[1] + 10
+        self.edges[3][0], self.edges[3][1] = cords[0] - 15, cords[1] + 10
 
     def check_crash(self):
         for i in self.edges:
