@@ -1,4 +1,6 @@
 import pygame
+from math import sin, cos
+from math import radians as rad
 
 pygame.init()
 
@@ -10,12 +12,12 @@ class Car:
         self.rotated_car = self.car
         self.angle = 0
         self.position = [315, 455]
-        self.center = [self.position[0], self.position[1] + 10]
+        self.center = [self.position[0]+15, self.position[1] + 10]
         self.edges = [[self.position[0]-15, self.position[1]-10], [self.position[0]+15, self.position[1]-10], [self.position[0]+15, self.position[1]+10], [self.position[0]-15, self.position[1]+10]]
 
     def draw(self):
-        self.rotated_car = pygame.transform.rotate(self.car, self.angle)
-        screen.blit(self.rotated_car, (self.position[0]-15, self.position[1]-10))
+        self.rotated_car = pygame.transform.rotate(self.car, -self.angle)
+        screen.blit(self.rotated_car, (int(self.position[0])-15, int(self.position[1])-10))
     
     def set_edges(self, cords):
         self.edges[0][0], self.edges[0][1] = cords[0] - 15, cords[1] - 10
@@ -25,7 +27,7 @@ class Car:
 
     def check_crash(self):
         for i in self.edges:
-            print(game_map.get_at(tuple(i)))
+            # print(game_map.get_at(tuple(i)))
             if game_map.get_at(tuple(i)) != (58, 58, 60, 255):
                 return True
         return False
@@ -40,30 +42,44 @@ while run:
     screen.blit(game_map, (0, 0))
     key = pygame.key.get_pressed()
     if key[pygame.K_UP] == True:
-        cords = (car.position[0], car.position[1]-1)
+        cords = (int(car.position[0] + cos(rad(car.angle))), int(car.position[1] + sin(rad(car.angle))))
         car.set_edges(cords)
         if not car.check_crash():
-            car.angle = 90
-            car.position[1] -= 1
+            print("not crashed")
+        else:
+            print("crashed")
+        car.position[0], car.position[1] = car.position[0] + cos(rad(car.angle)), car.position[1] + sin(rad(car.angle))
     elif key[pygame.K_DOWN] == True:
-        cords = (car.position[0], car.position[1]+1)
+        cords = (int(car.position[0] + cos(rad(car.angle))), int(car.position[1] + sin(rad(car.angle))))
         car.set_edges(cords)
         if not car.check_crash():
-            car.angle = -90
-            car.position[1] += 1
+            print("not crashed")
+        else:
+            print("crashed")
+        car.position[0], car.position[1] = car.position[0] - cos(rad(car.angle)), car.position[1] - sin(rad(car.angle))
+    
     elif key[pygame.K_RIGHT] == True:
-        cords = (car.position[0]+1, car.position[1])
+        cords = (int(car.position[0] + cos(rad(car.angle))), int(car.position[1] + sin(rad(car.angle))))
         car.set_edges(cords)
         if not car.check_crash():
-            car.angle = 0
-            car.position[0] += 1
+            print("not crashed")
+        else:
+            print("crashed")
+        
+        car.angle += 1
+    
     elif key[pygame.K_LEFT] == True:
-        cords = (car.position[0]-1, car.position[1])
+        cords = (int(car.position[0] + cos(rad(car.angle))), int(car.position[1] + sin(rad(car.angle))))
         car.set_edges(cords)
         if not car.check_crash():
-            car.angle = 180
-            car.position[0] -= 1
+            print("not crashed")
+        else:
+            print("crashed")
+        
+        car.angle -= 1
+
     car.draw()
+    # print(car.position)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
