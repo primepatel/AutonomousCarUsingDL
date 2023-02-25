@@ -19,10 +19,9 @@ class Car:
         self.rotated_car = pygame.transform.rotate(self.car, -self.angle)
         screen.blit(self.rotated_car, (int(self.position[0])-15, int(self.position[1])-10))
         self.sensor_data.clear()
-        loc = [int(abs((self.edges[1][0]+self.edges[2][0])/2)), int(abs((self.edges[1][1]+self.edges[2][1])/2))]
         for i in self.get_sensor_data():
             boundary = i[0]
-            pygame.draw.line(screen, (0, 255, 0),loc , boundary, 1)
+            pygame.draw.line(screen, (0, 255, 0), self.position, boundary, 1)
             pygame.draw.circle(screen, (0, 255, 0), boundary, 5)
 
     def set_edges(self, cords):
@@ -35,7 +34,6 @@ class Car:
 
     def check_crash(self):
         for i in self.edges:
-            # print(game_map.get_at(tuple(i)))
             if game_map.get_at(tuple(i)) != ROAD_COLOR:
                 print("crashed")
                 return True
@@ -44,7 +42,7 @@ class Car:
     
     def get_sensor_data(self):
         for sensor_angle in range(-90, 91, 30):
-            x, y = int(abs((self.edges[1][0]+self.edges[2][0])/2)), int(abs((self.edges[1][1]+self.edges[2][1])/2))
+            x, y = int(self.position[0]), int(self.position[1])
             length = 0
             a, b = x, y
             while game_map.get_at((x, y)) == ROAD_COLOR and length < 150:
@@ -88,7 +86,6 @@ while run:
         car.angle -= 1
 
     car.draw()
-    # print(car.position)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
