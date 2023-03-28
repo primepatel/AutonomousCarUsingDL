@@ -6,7 +6,7 @@ ROAD_COLOR, CAR_X, CAR_Y = (58, 58, 60, 255), 30, 20
 
 class Car:
     def __init__(self):
-        self.car = pygame.transform.scale(pygame.image.load('car.png').convert(), (CAR_X, CAR_Y))
+        self.car = pygame.transform.rotate(pygame.transform.scale(pygame.image.load('car.png').convert(), (CAR_X, CAR_Y)), 180)
         self.rotated_car = self.car
         self.position, self.angle, self.speed= [315, 455], 0, 0
         self.distance, self.sensors, self.alive = 0, [], True
@@ -108,6 +108,8 @@ class Simulator:
                 self.set_map()
                 screen.blit(self.game_map, (0, 0))
                 for car in self.cars:
+                    car.angle = 0
+                    car.speed = 0
                     car.position = [315, 455]
 
             for i, car in enumerate(self.cars):
